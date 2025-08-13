@@ -46,13 +46,13 @@ const ChartSvg = () => (
 
 export function MetricCard({ title, value, change, trend, className }: MetricCardProps) {
   return (
-    <div className={cn("flex flex-col gap-2.5 p-4 bg-clarivoice-card rounded-md w-full sm:w-[376px] animate-scale-in hover:scale-105 transition-transform duration-200", className)}>
+    <div className={cn("flex flex-col gap-2 sm:gap-2.5 p-3 sm:p-4 bg-clarivoice-card rounded-md w-full sm:w-auto sm:flex-1 lg:w-[376px] animate-scale-in hover:scale-105 transition-transform duration-200", className)}>
       {/* Header */}
       <div className="flex justify-between items-center">
-        <span className="text-clarivoice-white-70 text-sm font-medium font-['Plus_Jakarta_Sans']">
+        <span className="text-clarivoice-white-70 text-xs sm:text-sm font-medium font-['Plus_Jakarta_Sans']">
           {title}
         </span>
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="text-clarivoice-white-70">
+        <svg width="16" height="16" viewBox="0 0 18 18" fill="none" className="text-clarivoice-white-70 sm:w-[18px] sm:h-[18px] flex-shrink-0">
           <path
             d="M13.5 4.5L4.5 13.5"
             stroke="currentColor"
@@ -72,21 +72,23 @@ export function MetricCard({ title, value, change, trend, className }: MetricCar
 
       {/* Content */}
       <div className="flex justify-between items-end">
-        <div className="flex flex-col">
-          <span className="text-white text-[40px] font-bold font-['Plus_Jakarta_Sans'] leading-none">
+        <div className="flex flex-col min-w-0">
+          <span className="text-white text-2xl sm:text-3xl lg:text-[40px] font-bold font-['Plus_Jakarta_Sans'] leading-none">
             {value}
           </span>
           <div className="flex items-center gap-1 mt-1">
-            <span className="text-clarivoice-primary text-xs font-['Plus_Jakarta_Sans']">
+            <span className="text-clarivoice-primary text-xs font-['Plus_Jakarta_Sans'] truncate">
               {change}
             </span>
-            <div className="text-clarivoice-primary">
+            <div className="text-clarivoice-primary flex-shrink-0">
               <TrendIcon />
             </div>
           </div>
         </div>
-        <div className="text-clarivoice-primary">
-          <ChartSvg />
+        <div className="text-clarivoice-primary flex-shrink-0 ml-2">
+          <div className="w-16 sm:w-20 lg:w-[115px]">
+            <ChartSvg />
+          </div>
         </div>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { useState, useRef, useEffect } from "react";
 
 interface CallLog {
   callId: string;
@@ -16,20 +17,70 @@ const callLogs: CallLog[] = [
   { callId: "#12334", agent: "Alex", customer: "Sarah", status: "Ongoing", duration: "04:32" },
 ];
 
-const FilterDropdown = ({ label }: { label: string }) => (
-  <div className="flex items-center gap-3 px-4 py-3 border border-clarivoice-white-15 rounded-lg">
-    <span className="text-clarivoice-white-70 text-sm font-['Plus_Jakarta_Sans']">{label}</span>
-    <svg width="12" height="8" viewBox="0 0 12 8" fill="none" className="text-clarivoice-white-70">
-      <path
-        d="M2 3L6 6L10 3"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  </div>
-);
+interface FilterDropdownProps {
+  label: string;
+  options: string[];
+}
+
+const FilterDropdown = ({ label, options }: FilterDropdownProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selected, setSelected] = useState(label);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div className="relative w-full" ref={dropdownRef}>
+      <div
+        className="flex items-center justify-between gap-2 sm:gap-3 px-3 sm:px-4 py-2.5 sm:py-3 border border-clarivoice-white-15 rounded-lg cursor-pointer hover:bg-clarivoice-white-15/10 transition-colors min-h-[44px]"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <span className="text-clarivoice-white-70 text-xs sm:text-sm font-['Plus_Jakarta_Sans'] truncate flex-1 min-w-0">{selected}</span>
+        <svg
+          width="10"
+          height="6"
+          viewBox="0 0 12 8"
+          fill="none"
+          className={cn("text-clarivoice-white-70 transition-transform flex-shrink-0 sm:w-3 sm:h-2", isOpen && "rotate-180")}
+        >
+          <path
+            d="M2 3L6 6L10 3"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </div>
+
+      {isOpen && (
+        <div className="absolute top-full mt-1 w-full bg-clarivoice-card border border-clarivoice-white-15 rounded-lg shadow-lg z-10 animate-fade-in max-h-48 overflow-y-auto">
+          {options.map((option, index) => (
+            <div
+              key={index}
+              className="px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-['Plus_Jakarta_Sans'] text-clarivoice-white-70 hover:bg-clarivoice-white-15/20 hover:text-white cursor-pointer transition-colors first:rounded-t-lg last:rounded-b-lg"
+              onClick={() => {
+                setSelected(option);
+                setIsOpen(false);
+              }}
+            >
+              {option}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 const ActionIcons = () => (
   <div className="flex items-center gap-6">
@@ -89,44 +140,83 @@ export function CallLogsTable({ className }: CallLogsTableProps) {
   return (
     <div className={cn("flex flex-col gap-10", className)}>
       {/* Filters */}
-      <div className="flex flex-col gap-4 lg:flex-row lg:justify-between lg:items-center animate-fade-in">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-0 border border-clarivoice-white-15 rounded-lg overflow-hidden">
-          <FilterDropdown label="All Agents" />
-          <div className="border-l border-clarivoice-white-15 hidden sm:block">
-            <FilterDropdown label="Status: Ongoing" />
+      <div className="flex flex-col gap-3 sm:gap-4 lg:flex-row lg:justify-between lg:items-center animate-fade-in">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 lg:gap-4">
+          <div className="w-full sm:w-auto">
+            <FilterDropdown
+              label="All Agents"
+              options={[
+                "All Agents",
+                "Alex Thompson",
+                "Sarah Johnson",
+                "Mike Davis",
+                "Emma Wilson",
+                "John Smith"
+              ]}
+            />
           </div>
-          <div className="border-l border-clarivoice-white-15 hidden sm:block">
-            <FilterDropdown label="Duration: < 10 min" />
+          <div className="w-full sm:w-auto">
+            <FilterDropdown
+              label="Status: Ongoing"
+              options={[
+                "Status: All",
+                "Status: Ongoing",
+                "Status: Completed",
+                "Status: Missed",
+                "Status: On Hold"
+              ]}
+            />
+          </div>
+          <div className="w-full sm:w-auto">
+            <FilterDropdown
+              label="Duration: < 10 min"
+              options={[
+                "Duration: All",
+                "Duration: < 5 min",
+                "Duration: < 10 min",
+                "Duration: 10-30 min",
+                "Duration: > 30 min"
+              ]}
+            />
           </div>
         </div>
-        <div className="border border-clarivoice-white-15 rounded-lg">
-          <FilterDropdown label="Records: 4" />
+        <div className="w-full sm:w-auto lg:w-auto">
+          <FilterDropdown
+            label="Records: 4"
+            options={[
+              "Records: 4",
+              "Records: 10",
+              "Records: 25",
+              "Records: 50",
+              "Records: 100"
+            ]}
+          />
         </div>
       </div>
 
       {/* Table */}
       <div className="border border-clarivoice-white-15 rounded-lg overflow-hidden animate-scale-in">
         <div className="overflow-x-auto lg:overflow-x-visible">
-          <div className="min-w-[1163px] lg:min-w-0">
+          <div className="min-w-[800px] lg:min-w-0 w-full">
             <div className="flex bg-clarivoice-card">
           {/* Headers */}
-          <div className="w-[193px] flex items-center justify-center px-2.5 py-6">
-            <span className="text-white text-base font-medium font-['Plus_Jakarta_Sans']">Call ID</span>
+          <div className="w-[120px] lg:w-[193px] flex items-center justify-center px-1.5 lg:px-2.5 py-4 lg:py-6">
+            <span className="text-white text-sm lg:text-base font-medium font-['Plus_Jakarta_Sans']">Call ID</span>
           </div>
-          <div className="w-[194px] flex items-center justify-center px-2.5 py-6">
-            <span className="text-white text-base font-medium font-['Plus_Jakarta_Sans']">Agent</span>
+          <div className="w-[100px] lg:w-[194px] flex items-center justify-center px-1.5 lg:px-2.5 py-4 lg:py-6">
+            <span className="text-white text-sm lg:text-base font-medium font-['Plus_Jakarta_Sans']">Agent</span>
           </div>
-          <div className="w-[194px] flex items-center justify-center px-2.5 py-6">
-            <span className="text-white text-base font-medium font-['Plus_Jakarta_Sans']">Customer</span>
+          <div className="w-[110px] lg:w-[194px] flex items-center justify-center px-1.5 lg:px-2.5 py-4 lg:py-6">
+            <span className="text-white text-sm lg:text-base font-medium font-['Plus_Jakarta_Sans']">Customer</span>
           </div>
-          <div className="w-[194px] flex items-center justify-center px-2.5 py-6">
-            <span className="text-white text-base font-medium font-['Plus_Jakarta_Sans']">Status</span>
+          <div className="w-[120px] lg:w-[194px] flex items-center justify-center px-1.5 lg:px-2.5 py-4 lg:py-6">
+            <span className="text-white text-sm lg:text-base font-medium font-['Plus_Jakarta_Sans']">Status</span>
           </div>
-          <div className="w-[194px] flex items-center justify-center px-2.5 py-6">
-            <span className="text-white text-base font-medium font-['Plus_Jakarta_Sans']">Duration</span>
+          <div className="w-[100px] lg:w-[194px] flex items-center justify-center px-1.5 lg:px-2.5 py-4 lg:py-6">
+            <span className="text-white text-sm lg:text-base font-medium font-['Plus_Jakarta_Sans']">Duration</span>
           </div>
-          <div className="flex-1 flex items-center justify-center px-2.5 py-6">
-            <span className="text-white text-base font-medium font-['Plus_Jakarta_Sans']">Actions</span>
+          <div className="flex-1 min-w-[100px] flex items-center justify-center px-1.5 lg:px-2.5 py-4 lg:py-6">
+            <span className="text-white text-sm lg:text-base font-medium font-['Plus_Jakarta_Sans']">Actions</span>
           </div>
         </div>
 
