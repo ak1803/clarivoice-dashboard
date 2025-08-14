@@ -40,11 +40,11 @@ const FilterDropdown = ({ label, options, variant = "standalone" }: FilterDropdo
   }, []);
 
   const buttonClasses = variant === "grouped"
-    ? "flex items-center justify-between gap-2 py-3 hover:bg-clarivoice-white-15/10 transition-colors cursor-pointer min-h-[44px] w-full"
+    ? "px-3 flex items-center justify-between gap-2 py-3 hover:bg-clarivoice-white-15/10 transition-colors cursor-pointer min-h-[44px] w-full"
     : "flex items-center justify-between gap-2 sm:gap-3 px-3 sm:px-4 py-3 border border-clarivoice-white-15 rounded-lg cursor-pointer hover:bg-clarivoice-white-15/10 transition-colors min-h-[44px]";
 
   return (
-    <div className="relative w-full px-3" ref={dropdownRef}>
+    <div className="relative w-full " ref={dropdownRef}>
       <div
         className={buttonClasses}
         onClick={() => setIsOpen(!isOpen)}
