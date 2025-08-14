@@ -44,7 +44,7 @@ const FilterDropdown = ({ label, options, variant = "standalone" }: FilterDropdo
     : "flex items-center justify-between gap-2 sm:gap-3 px-3 sm:px-4 py-3 border border-clarivoice-white-15 rounded-lg cursor-pointer hover:bg-clarivoice-white-15/10 transition-colors min-h-[44px]";
 
   return (
-    <div className="relative w-full" ref={dropdownRef}>
+    <div className="relative w-full px-3" ref={dropdownRef}>
       <div
         className={buttonClasses}
         onClick={() => setIsOpen(!isOpen)}
@@ -219,8 +219,8 @@ export function CallLogsTable({ className }: CallLogsTableProps) {
 
         {/* Desktop View - Grouped Layout as per Figma */}
         <div className="hidden lg:flex lg:justify-between lg:items-center">
-          <div className="flex items-center border border-clarivoice-white-15 rounded-lg overflow-hidden">
-            <div className="px-4 py-3 border-r border-clarivoice-white-15">
+          <div className="flex items-center border border-clarivoice-white-15 rounded-lg ">
+            <div className=" border-r border-clarivoice-white-15">
               <FilterDropdown
                 label="All Agents"
                 variant="grouped"
@@ -234,7 +234,7 @@ export function CallLogsTable({ className }: CallLogsTableProps) {
                 ]}
               />
             </div>
-            <div className="px-4 py-3 border-r border-clarivoice-white-15">
+            <div className=" border-r border-clarivoice-white-15">
               <FilterDropdown
                 label="Status: Ongoing"
                 variant="grouped"
@@ -247,7 +247,7 @@ export function CallLogsTable({ className }: CallLogsTableProps) {
                 ]}
               />
             </div>
-            <div className="px-4">
+            <div className="">
               <FilterDropdown
                 label="Duration: < 10 min"
                 variant="grouped"
