@@ -20,9 +20,10 @@ const callLogs: CallLog[] = [
 interface FilterDropdownProps {
   label: string;
   options: string[];
+  variant?: "grouped" | "standalone";
 }
 
-const FilterDropdown = ({ label, options }: FilterDropdownProps) => {
+const FilterDropdown = ({ label, options, variant = "standalone" }: FilterDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState(label);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -38,19 +39,23 @@ const FilterDropdown = ({ label, options }: FilterDropdownProps) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const buttonClasses = variant === "grouped"
+    ? "flex items-center justify-between gap-2 py-3 hover:bg-clarivoice-white-15/10 transition-colors cursor-pointer min-h-[44px] w-full"
+    : "flex items-center justify-between gap-2 sm:gap-3 px-3 sm:px-4 py-3 border border-clarivoice-white-15 rounded-lg cursor-pointer hover:bg-clarivoice-white-15/10 transition-colors min-h-[44px]";
+
   return (
     <div className="relative w-full" ref={dropdownRef}>
       <div
-        className="flex items-center justify-between gap-2 sm:gap-3 px-3 sm:px-4 py-2.5 sm:py-3 border border-clarivoice-white-15 rounded-lg cursor-pointer hover:bg-clarivoice-white-15/10 transition-colors min-h-[44px]"
+        className={buttonClasses}
         onClick={() => setIsOpen(!isOpen)}
       >
         <span className="text-clarivoice-white-70 text-xs sm:text-sm font-['Plus_Jakarta_Sans'] truncate flex-1 min-w-0">{selected}</span>
         <svg
-          width="10"
-          height="6"
+          width="12"
+          height="8"
           viewBox="0 0 12 8"
           fill="none"
-          className={cn("text-clarivoice-white-70 transition-transform flex-shrink-0 sm:w-3 sm:h-2", isOpen && "rotate-180")}
+          className={cn("text-clarivoice-white-70 transition-transform flex-shrink-0", isOpen && "rotate-180")}
         >
           <path
             d="M2 3L6 6L10 3"
@@ -63,11 +68,11 @@ const FilterDropdown = ({ label, options }: FilterDropdownProps) => {
       </div>
 
       {isOpen && (
-        <div className="absolute top-full mt-1 w-full bg-clarivoice-card border border-clarivoice-white-15 rounded-lg shadow-lg z-10 animate-fade-in max-h-48 overflow-y-auto">
+        <div className="absolute top-full mt-1 w-full bg-clarivoice-card border border-clarivoice-white-15 rounded-lg shadow-lg z-50 animate-fade-in max-h-48 overflow-y-auto">
           {options.map((option, index) => (
             <div
               key={index}
-              className="px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-['Plus_Jakarta_Sans'] text-clarivoice-white-70 hover:bg-clarivoice-white-15/20 hover:text-white cursor-pointer transition-colors first:rounded-t-lg last:rounded-b-lg"
+              className="px-4 py-3 text-sm font-['Plus_Jakarta_Sans'] text-clarivoice-white-70 hover:bg-clarivoice-white-15/20 hover:text-white cursor-pointer transition-colors first:rounded-t-lg last:rounded-b-lg"
               onClick={() => {
                 setSelected(option);
                 setIsOpen(false);
@@ -140,57 +145,136 @@ export function CallLogsTable({ className }: CallLogsTableProps) {
   return (
     <div className={cn("flex flex-col gap-10", className)}>
       {/* Filters */}
-      <div className="flex flex-col gap-3 sm:gap-4 lg:flex-row lg:justify-between lg:items-center animate-fade-in">
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 lg:gap-4">
-          <div className="w-full sm:w-auto">
-            <FilterDropdown
-              label="All Agents"
-              options={[
-                "All Agents",
-                "Alex Thompson",
-                "Sarah Johnson",
-                "Mike Davis",
-                "Emma Wilson",
-                "John Smith"
-              ]}
-            />
-          </div>
-          <div className="w-full sm:w-auto">
-            <FilterDropdown
-              label="Status: Ongoing"
-              options={[
-                "Status: All",
-                "Status: Ongoing",
-                "Status: Completed",
-                "Status: Missed",
-                "Status: On Hold"
-              ]}
-            />
-          </div>
-          <div className="w-full sm:w-auto">
-            <FilterDropdown
-              label="Duration: < 10 min"
-              options={[
-                "Duration: All",
-                "Duration: < 5 min",
-                "Duration: < 10 min",
-                "Duration: 10-30 min",
-                "Duration: > 30 min"
-              ]}
-            />
+      <div className="animate-fade-in">
+        {/* Mobile/Tablet View - Grouped Layout */}
+        <div className="lg:hidden space-y-3">
+          <div className="flex flex-col sm:flex-row gap-3">
+            {/* Main Filters Group */}
+            <div className="flex-1 border border-clarivoice-white-15 rounded-lg overflow-hidden">
+              <div className="grid grid-cols-1 sm:grid-cols-3">
+                <div className="border-b sm:border-b-0 sm:border-r border-clarivoice-white-15">
+                  <div className="p-3">
+                    <FilterDropdown
+                      label="All Agents"
+                      variant="grouped"
+                      options={[
+                        "All Agents",
+                        "Alex Thompson",
+                        "Sarah Johnson",
+                        "Mike Davis",
+                        "Emma Wilson",
+                        "John Smith"
+                      ]}
+                    />
+                  </div>
+                </div>
+                <div className="border-b sm:border-b-0 sm:border-r border-clarivoice-white-15">
+                  <div className="p-3">
+                    <FilterDropdown
+                      label="Status: Ongoing"
+                      variant="grouped"
+                      options={[
+                        "Status: All",
+                        "Status: Ongoing",
+                        "Status: Completed",
+                        "Status: Missed",
+                        "Status: On Hold"
+                      ]}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <div className="p-3">
+                    <FilterDropdown
+                      label="Duration: < 10 min"
+                      variant="grouped"
+                      options={[
+                        "Duration: All",
+                        "Duration: < 5 min",
+                        "Duration: < 10 min",
+                        "Duration: 10-30 min",
+                        "Duration: > 30 min"
+                      ]}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Records Filter - Separate and smaller */}
+            <div className="w-full sm:w-32">
+              <FilterDropdown
+                label="Records: 4"
+                options={[
+                  "Records: 4",
+                  "Records: 10",
+                  "Records: 25",
+                  "Records: 50",
+                  "Records: 100"
+                ]}
+              />
+            </div>
           </div>
         </div>
-        <div className="w-full sm:w-auto lg:w-auto">
-          <FilterDropdown
-            label="Records: 4"
-            options={[
-              "Records: 4",
-              "Records: 10",
-              "Records: 25",
-              "Records: 50",
-              "Records: 100"
-            ]}
-          />
+
+        {/* Desktop View - Grouped Layout as per Figma */}
+        <div className="hidden lg:flex lg:justify-between lg:items-center">
+          <div className="flex items-center border border-clarivoice-white-15 rounded-lg overflow-hidden">
+            <div className="px-4 py-3 border-r border-clarivoice-white-15">
+              <FilterDropdown
+                label="All Agents"
+                variant="grouped"
+                options={[
+                  "All Agents",
+                  "Alex Thompson",
+                  "Sarah Johnson",
+                  "Mike Davis",
+                  "Emma Wilson",
+                  "John Smith"
+                ]}
+              />
+            </div>
+            <div className="px-4 py-3 border-r border-clarivoice-white-15">
+              <FilterDropdown
+                label="Status: Ongoing"
+                variant="grouped"
+                options={[
+                  "Status: All",
+                  "Status: Ongoing",
+                  "Status: Completed",
+                  "Status: Missed",
+                  "Status: On Hold"
+                ]}
+              />
+            </div>
+            <div className="px-4">
+              <FilterDropdown
+                label="Duration: < 10 min"
+                variant="grouped"
+                options={[
+                  "Duration: All",
+                  "Duration: < 5 min",
+                  "Duration: < 10 min",
+                  "Duration: 10-30 min",
+                  "Duration: > 30 min"
+                ]}
+              />
+            </div>
+          </div>
+
+          {/* Records Filter - Separate and aligned right */}
+          <div className="w-auto">
+            <FilterDropdown
+              label="Records: 4"
+              options={[
+                "Records: 4",
+                "Records: 10",
+                "Records: 25",
+                "Records: 50",
+                "Records: 100"
+              ]}
+            />
+          </div>
         </div>
       </div>
 

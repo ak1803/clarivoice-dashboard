@@ -46,13 +46,13 @@ const ChartSvg = () => (
 
 export function MetricCard({ title, value, change, trend, className }: MetricCardProps) {
   return (
-    <div className={cn("flex flex-col gap-2 sm:gap-2.5 p-3 sm:p-4 bg-clarivoice-card rounded-md w-full sm:w-auto sm:flex-1 lg:w-[376px] animate-scale-in hover:scale-105 transition-transform duration-200", className)}>
+    <div className={cn("flex flex-col gap-2.5 p-4 bg-clarivoice-card rounded-md w-full animate-scale-in hover:scale-105 transition-transform duration-200", className)}>
       {/* Header */}
       <div className="flex justify-between items-center">
-        <span className="text-clarivoice-white-70 text-xs sm:text-sm font-medium font-['Plus_Jakarta_Sans']">
+        <span className="text-clarivoice-white-70 text-sm font-medium font-['Plus_Jakarta_Sans']">
           {title}
         </span>
-        <svg width="16" height="16" viewBox="0 0 18 18" fill="none" className="text-clarivoice-white-70 sm:w-[18px] sm:h-[18px] flex-shrink-0">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="text-clarivoice-white-70 flex-shrink-0">
           <path
             d="M13.5 4.5L4.5 13.5"
             stroke="currentColor"
@@ -72,8 +72,8 @@ export function MetricCard({ title, value, change, trend, className }: MetricCar
 
       {/* Content */}
       <div className="flex justify-between items-end">
-        <div className="flex flex-col min-w-0">
-          <span className="text-white text-2xl sm:text-3xl lg:text-[40px] font-bold font-['Plus_Jakarta_Sans'] leading-none">
+        <div className="flex flex-col min-w-0 flex-1">
+          <span className="text-white text-3xl sm:text-4xl lg:text-[40px] font-bold font-['Plus_Jakarta_Sans'] leading-none">
             {value}
           </span>
           <div className="flex items-center gap-1 mt-1">
@@ -85,9 +85,39 @@ export function MetricCard({ title, value, change, trend, className }: MetricCar
             </div>
           </div>
         </div>
-        <div className="text-clarivoice-primary flex-shrink-0 ml-2">
-          <div className="w-16 sm:w-20 lg:w-[115px]">
-            <ChartSvg />
+        <div className="text-clarivoice-primary flex-shrink-0 ml-2 sm:ml-3">
+          <div className="w-16 h-6 sm:w-20 sm:h-7 lg:w-[115px] lg:h-auto">
+            <svg
+              width="100%"
+              height="100%"
+              viewBox="0 0 117 35"
+              fill="none"
+              className="w-full h-full"
+              preserveAspectRatio="xMidYMid meet"
+            >
+              <path
+                d="M1.33337 18.044C3.02601 20.5376 8.14376 25.3251 15.0736 24.5272C23.736 23.5298 21.0477 18.044 26.4243 18.044C31.8009 18.044 31.8009 21.7843 35.9827 21.7843C40.1645 21.7843 36.8788 14.0544 42.2555 14.3038C47.6321 14.5531 43.749 30.0129 53.0087 29.7636C62.2684 29.5142 59.2814 9.06748 67.0477 9.56618C74.8139 10.0649 67.9438 16.0491 73.6191 18.044C79.2944 20.0389 76.6061 27.7688 81.9827 27.7688C87.3593 27.7688 85.2684 15.0519 93.3334 15.0519C101.398 15.0519 98.1281 24.6245 105.58 25.0259C114.84 25.5246 105.58 1.33765 116.333 1.33765"
+                stroke="currentColor"
+                strokeWidth="1.2"
+              />
+              <path
+                d="M15.0736 24.5272C8.14376 25.3251 3.02601 20.5376 1.33337 18.044V35H116.333V1.33765C105.58 1.33765 114.84 25.5246 105.58 25.0259C98.1281 24.6245 101.398 15.0519 93.3334 15.0519C85.2684 15.0519 87.3593 27.7688 81.9827 27.7688C76.6061 27.7688 79.2944 20.0389 73.6191 18.044C67.9438 16.0491 74.8139 10.0649 67.0477 9.56618C59.2814 9.06748 62.2684 29.5142 53.0087 29.7636C43.749 30.0129 47.6321 14.5531 42.2555 14.3038C36.8788 14.0544 40.1645 21.7843 35.9827 21.7843C31.8009 21.7843 31.8009 18.044 26.4243 18.044C21.0477 18.044 23.736 23.5298 15.0736 24.5272Z"
+                fill="url(#paint0_linear_7_665)"
+              />
+              <defs>
+                <linearGradient
+                  id="paint0_linear_7_665"
+                  x1="69.4373"
+                  y1="-0.407808"
+                  x2="69.4373"
+                  y2="34.7506"
+                  gradientUnits="userSpaceOnUse"
+                >
+                  <stop stopColor="currentColor" stopOpacity="0.25" />
+                  <stop offset="1" stopColor="currentColor" stopOpacity="0" />
+                </linearGradient>
+              </defs>
+            </svg>
           </div>
         </div>
       </div>
