@@ -41,7 +41,7 @@ const FilterDropdown = ({ label, options, variant = "standalone" }: FilterDropdo
 
   const buttonClasses = variant === "grouped"
     ? "px-3 flex items-center justify-between gap-2 py-3 hover:bg-clarivoice-white-15/10 transition-colors cursor-pointer min-h-[44px] w-full"
-    : "flex items-center justify-between gap-2 sm:gap-3 px-3 sm:px-4 py-3 border border-clarivoice-white-15 rounded-lg cursor-pointer hover:bg-clarivoice-white-15/10 transition-colors min-h-[44px]";
+    : "px-3 flex items-center justify-between gap-2 sm:gap-3 px-3 sm:px-4 py-3 border border-clarivoice-white-15 rounded-lg cursor-pointer hover:bg-clarivoice-white-15/10 transition-colors min-h-[44px]";
 
   return (
     <div className="relative w-full " ref={dropdownRef}>
@@ -150,7 +150,7 @@ export function CallLogsTable({ className }: CallLogsTableProps) {
         <div className="lg:hidden space-y-3">
           <div className="flex flex-col sm:flex-row gap-3">
             {/* Main Filters Group */}
-            <div className="flex-1 border border-clarivoice-white-15 rounded-lg overflow-hidden">
+            <div className="flex-1 border border-clarivoice-white-15 rounded-lg">
               <div className="grid grid-cols-1 sm:grid-cols-3">
                 <div className="border-b sm:border-b-0 sm:border-r border-clarivoice-white-15">
                   <div className="p-3">
