@@ -1,5 +1,9 @@
 import { Dashboard } from "@/components/Dashboard";
+import Login from "@/components/Login";
 
-export default function Index() {
-  return <Dashboard />;
+export default function Index(){
+   
+  return( 
+    
+   )
 }
